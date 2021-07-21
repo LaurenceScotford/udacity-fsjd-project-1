@@ -1,5 +1,5 @@
-const tsTest = "Typescript is working!";
+const myFunc = (num: number): number => {
+  return num * num;
+};
 
-const logTest = (message: string): string => `${tsTest}`;
-
-console.log(logTest(tsTest));
+export default myFunc;
