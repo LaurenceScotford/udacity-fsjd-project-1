@@ -4,6 +4,7 @@
   "description": "This is my submission for the first project for the Udacity Full Stack Javascript Developer Nanodegree.",
   "main": "index.js",
   "scripts": {
+    "start": "nodemon src/index.ts",
     "build": "npx tsc",
     "jasmine": "jasmine",
     "test": "npm run build && npm run jasmine"
@@ -19,11 +20,15 @@
   },
   "homepage": "https://github.com/LaurenceScotford/udacity-fsjd-project-1#readme",
   "devDependencies": {
+    "@types/express": "^4.17.13",
     "@types/jasmine": "^3.8.1",
     "@types/node": "^16.4.0",
+    "nodemon": "^2.0.12",
+    "ts-node": "^10.1.0",
     "typescript": "^4.3.5"
   },
   "dependencies": {
+    "express": "^4.17.1",
     "jasmine": "^3.8.0",
     "jasmine-spec-reporter": "^7.0.0"
   }
