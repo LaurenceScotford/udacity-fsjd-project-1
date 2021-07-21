@@ -1,0 +1,24 @@
+{
+  "name": "udacity-fsjd-project-1",
+  "version": "1.0.0",
+  "description": "This is my submission for the first project for the Udacity Full Stack Javascript Developer Nanodegree.",
+  "main": "index.js",
+  "scripts": {
+    "build": "npx tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LaurenceScotford/udacity-fsjd-project-1.git"
+  },
+  "author": "Laurence Scotford",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/LaurenceScotford/udacity-fsjd-project-1/issues"
+  },
+  "homepage": "https://github.com/LaurenceScotford/udacity-fsjd-project-1#readme",
+  "devDependencies": {
+    "@types/node": "^16.4.0",
+    "typescript": "^4.3.5"
+  }
+}
