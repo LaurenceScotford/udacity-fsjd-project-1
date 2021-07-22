@@ -4,6 +4,8 @@
   "description": "This is my submission for the first project for the Udacity Full Stack Javascript Developer Nanodegree.",
   "main": "index.js",
   "scripts": {
+    "lint": "eslint . --ext .ts",
+    "prettier": "prettier --config .prettierrc src/**/*.ts --write",
     "start": "nodemon src/index.ts",
     "clean": "rimraf dist/",
     "copy-files": "copyfiles -f src/images/*.* dist/images/",
@@ -15,6 +17,11 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/LaurenceScotford/udacity-fsjd-project-1.git"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run prettier && npm run lint"
+    }
   },
   "author": "Laurence Scotford",
   "license": "MIT",
@@ -28,8 +35,15 @@
     "@types/node": "^16.4.0",
     "@types/sharp": "^0.28.4",
     "@types/supertest": "^2.0.11",
+    "@typescript-eslint/eslint-plugin": "^4.28.4",
+    "@typescript-eslint/parser": "^4.28.4",
     "copyfiles": "^2.4.1",
+    "eslint": "^7.31.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^3.4.0",
+    "husky": "^7.0.1",
     "nodemon": "^2.0.12",
+    "prettier": "^2.3.2",
     "rimraf": "^3.0.2",
     "supertest": "^6.1.4",
     "ts-node": "^10.1.0",
