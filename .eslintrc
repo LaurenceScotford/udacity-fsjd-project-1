@@ -3,15 +3,18 @@
   "parser": "@typescript-eslint/parser",
   "plugins": [
     "@typescript-eslint",
+    "eslint-plugin-tsdoc",
     "prettier"
   ],
   "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/recommended",
     "prettier"
   ],
   "rules": {
-    "prettier/prettier": 2
+    "tsdoc/syntax": "warn",
+    "prettier/prettier": "error"
   }
 }
