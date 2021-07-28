@@ -1,39 +1,24 @@
 import { access, readdir } from 'fs/promises';
 import path from 'path';
-import sharp from 'sharp';
+import sharp, { FormatEnum } from 'sharp';
+import { thumbnailPath, imagePath } from './apiconstants';
 
-const imagePath = __dirname + '/images/';
-const thumbnailPath = __dirname + '/thumbnails/';
-
-class imageFile {
-  private name: string;
-  private type: string;
-  private path: string;
-  private width: number;
-  private height: number;
-
-  constructor(name: string, type: string, width: number, height: number) {
-    this.name = name;
-    this.type = type;
-    this.width = width;
-    this.height = height;
-    this.path = '';
-  }
+interface OptionsObject {
+  [key: string]: number | string
 }
 
 /**
- * Creates a new thumbnail of an image with the requested parameters and returns its path or returns the path of an existing thumbnail/raw image
+ * Check for a thumbnail of an image with the requested parameters (creating one if it doesn't exist) and returns its path or path of the raw image if no transformation is required
  * 
  * @param imageFile A path to the raw image
  * @param name The name of the image
- * @param type The type to convert the image to - can be 'jpg', 'png', 'webp' or an empty string if no conversion is required
+ * @param type The type to convert the image to - can be 'jpeg', 'png', 'webp' or an empty string if no conversion is required
  * @param width The width of the thumbnail in pixels (or 0 for an auto width)
  * @param height The height of the thumbnail in pixels (or 0 for an auto height)
  * NOTE: An auto width or height will be set to either the original image size if both are auto, or will be set to retain the original aspect ratio
  * @returns The path to the created or existing thumbnail or the raw image if no conversion or resizing was specified
  */
-async function createImage(imageFile: string, name: string, type: string, width: number, height: number) : Promise<string> {
-  
+async function serveImage(imageFile: string, name: string, type: string, width: number, height: number) : Promise<string> {
   let outPath : string = imageFile; 
 
   // If the requested image is not being modified in any way, simply return the original image
@@ -44,37 +29,68 @@ async function createImage(imageFile: string, name: string, type: string, width:
     
     // Get the filepath for the modified file
     outPath = thumbPath(name, type, width, height);
-    console.log(outPath);
-
-    // Create size options
-    interface OptionsObject {
-      [key: string]: number | string
-    }
-
-    const options : OptionsObject = {};
     
-    if (width > 0 ) {
-      options.width = width;
-    }
+    // Check if the requested thumbnail already exists
+    const fileExists = await thumbnailExists(outPath);
+    
+    // If it doesn't, create a new thumbnail
+    if (!fileExists) {
+      // Create size options
+      const options : OptionsObject = {};
+      
+      if (width > 0 ) {
+        options.width = width;
+      }
 
-    if (height > 0 ) {
-        options.height = height;
-    }
+      if (height > 0 ) {
+          options.height = height;
+      }
 
-    if (height > 0 && width > 0) {
-      options.fit = 'fill';
-    }
+      if (height > 0 && width > 0) {
+        options.fit = 'fill';
+      }
 
-    try {
-      await sharp(imageFile)
-      .resize(options)
-      .toFile(outPath);
-    } catch(err) {
-      console.log(err);
+      await createImage(imageFile, options, type, outPath);
     }
   }
 
   return outPath;
+}
+
+/**
+ * Checks if the thumbnail exists and returns true (exists) or false (does not exist)
+ * 
+ * @param filePath A path to the thumbnail
+ * @returns true if the file exists or false if it doesn't
+ */
+async function thumbnailExists(filePath: string) : Promise<boolean> {
+  let fileTest: boolean;
+  try {
+    await access(filePath);
+    fileTest = true;
+  } catch {
+    fileTest = false;
+  }
+  return fileTest;
+}
+
+/**
+ * Creates an image using the specified options, based on a base image and saves it to the desired location
+ * 
+ * @param imageFile A path to the base image
+ * @param sizeOptions The size options for the image to be created
+ * @param format The format for the created image (jpg, png or webp)
+ * @param outPath The path to save the created image to
+ */
+async function createImage(imageFile: string, sizeOptions: OptionsObject, format: string, outPath: string) : Promise<void> {
+  try {
+    await sharp(imageFile)
+    .resize(sizeOptions)
+    .toFormat(format as keyof FormatEnum)
+    .toFile(outPath);
+  } catch(err) {
+    console.log(err);
+  }
 }
 
 /**
@@ -112,4 +128,4 @@ function thumbPath(imageName : string, type : string, width :number , height : n
     return thumbnailPath + imageName + '_' + width + 'x' + height + '.' + type;
 }
 
-export {findImage, createImage};
+export { findImage, serveImage, thumbPath };

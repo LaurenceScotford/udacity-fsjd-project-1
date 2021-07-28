@@ -1,12 +1,10 @@
 import express from 'express';
-import {findImage, createImage} from '../imageProcessing';
+import { findImage, serveImage } from '../imageProcessing';
+import { validTypes } from '../apiconstants';
 
 const router = express.Router();
 
-
 router.get('/', async (req, res) => {
-
-  const validTypes = ['jpg', 'png', 'webp'];
 
   const name = req.query.name ? (req.query.name as string).toLowerCase() : '';
   const type = req.query.type ? (req.query.type as string).toLowerCase() : '';
@@ -18,7 +16,7 @@ router.get('/', async (req, res) => {
   } else {
     const imageFile = await findImage(req.query.name as string);
     if (imageFile.length > 0) {
-      const outFile = await createImage(imageFile, name, type, width, height)
+      const outFile = await serveImage(imageFile, name, type, width, height)
       res.sendFile(outFile);
     } else {
       res.status(404).send('Requested image not found');
