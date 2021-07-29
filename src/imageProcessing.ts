@@ -1,7 +1,7 @@
 import { access, readdir } from 'fs/promises';
 import path from 'path';
 import sharp, { FormatEnum } from 'sharp';
-import { thumbnailPath, imagePath } from './apiconstants';
+import { thumbnailPath, imagePath, validTypes } from './apiconstants';
 
 interface OptionsObject {
   [key: string]: number | string
@@ -26,6 +26,7 @@ async function serveImage(imageFile: string, name: string, type: string, width: 
     
     // Set the required output file type
     type = type.length === 0 ?  path.parse(imageFile).ext.substring(1) : type;
+    type = validTypes[type];
     
     // Get the filepath for the modified file
     outPath = thumbPath(name, type, width, height);
@@ -128,4 +129,4 @@ function thumbPath(imageName : string, type : string, width :number , height : n
     return thumbnailPath + imageName + '_' + width + 'x' + height + '.' + type;
 }
 
-export { findImage, serveImage, thumbPath };
+export { findImage, serveImage, createImage, thumbnailExists, thumbPath };

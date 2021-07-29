@@ -11,7 +11,7 @@ router.get('/', async (req, res) => {
   const width = req.query.width ? parseInt(req.query.width as string) : 0;
   const height = req.query.height ? parseInt(req.query.height as string) : 0;
 
-  if (name.length == 0 || isNaN(width) || width < 0 || isNaN(height) || height < 0 || (type.length > 0 && !validTypes.includes(type))) {
+  if (name.length == 0 || isNaN(width) || width < 0 || isNaN(height) || height < 0 || (type.length > 0 && !Object.values(validTypes).includes(type))) {
     res.status(401).send('Malformed query');
   } else {
     const imageFile = await findImage(req.query.name as string);
