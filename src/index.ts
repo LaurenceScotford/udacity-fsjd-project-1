@@ -12,8 +12,10 @@ try {
   if (!existsSync(thumbnailPath)) {
     mkdirSync(thumbnailPath);
   }
-} catch(err) {
-  console.log("An error occurred while checking thumbnail path or making new thumbnail directory")
+} catch (err) {
+  console.log(
+    'An error occurred while checking thumbnail path or making new thumbnail directory'
+  );
 }
 
 app.set('view engine', 'ejs');
@@ -25,7 +27,7 @@ app.use(express.static(__dirname + '/public'));
 app.get('/', async (req, res) => {
   // Get a list of available images
   app.locals.imageList = await getImageList();
-  app.locals.baseUrl = req.protocol + "://" + req.hostname + ":" + port;
+  app.locals.baseUrl = req.protocol + '://' + req.hostname + ':' + port;
   res.render('index');
 });
 

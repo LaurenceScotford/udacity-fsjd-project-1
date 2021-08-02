@@ -56,8 +56,8 @@
         <ul>
             <li>If you enter invalid parameters (e.g. no <strong>name</strong> parameter, <strong>width</strong> or
                 <strong>height</strong> are non-numeric or negative numbers, <strong>format</strong> is not a supported output type)
-                then the API will respond with an HTTP 401 status.</li>
-            <li>If the requested image cannot be found, then the API will respond with an http 404 status.</li>
+                then the API will respond with an HTTP 400 status.</li>
+            <li>If the requested image cannot be found, then the API will respond with an HTTP 404 status.</li>
         </ul>
 
         <h2>Endpoint URL generator</h2>
@@ -102,7 +102,6 @@
             <script>
                 document.addEventListener('DOMContentLoaded', function () {
                     setUpFormListeners("<%= baseUrl %>");
-                    writeURL("<%= baseUrl %>");
                 });
             </script>
     </body>

@@ -41,9 +41,11 @@ if a valid format is included then the output image will be of the format specif
 
 ### Errors
 
-If the query is properly formed and the image is matched then an image of the requested size and format will be served.
+If the query is properly formed and the image is matched then an image of the requested size and format will be served with an HTTP status of 200.
 
-If the name is excluded, or invalid arguments are passed to width or height (less than zero or non-numeric) or to format (anything other than jpg, png, webp, vif or tiff) then the API will return a 401 HTTP status.
+If the server fails to process the image request (unlikely), then the API will return a 500 HTTP stats
+
+If the name is excluded, or invalid arguments are passed to width or height (less than zero or non-numeric) or to format (anything other than jpg, png, webp, vif or tiff) then the API will return a 400 HTTP status.
 
 If an image matching the name is not found then the API will return a 404 HTTP status. Images available in the base solution are:
 
@@ -99,7 +101,7 @@ To run the tests
 npm run test
 ```
 
-To start the server in development mode
+To start the server in development mode (NOTE: In this mode the API is fully functional but the endpoint helper on the home page won't be functional because it depends on a javascript file that won't yet be compiled - to test this functionality, build the project and run the app with node)
 
 ```
 npm run start
@@ -111,7 +113,11 @@ To build the project:
 npm run build
 ```
 
-The built files are written to **/dist**
+The built files are written to **/dist**. To run the built project, from within the **/dist** directory run
+
+```
+node .
+```
 
 ## Development environment
 
@@ -144,7 +150,3 @@ Thumbnails are stored in the **/thumbnails** directory. The API will check for t
 
 This project uses the [sharp](https://sharp.pixelplumbing.com/) image manipulation library.
 This project uses images supplied by [Udacity](https://www.udacity.com/).
-
-## Current Status
-
-This is currently a work in progress.
