@@ -57,7 +57,7 @@ async function serveImage(
         options.fit = 'fill';
       }
 
-      if (!await createImage(imageFile, options, format, outPath)) {
+      if (!(await createImage(imageFile, options, format, outPath))) {
         outPath = '';
       }
     }
@@ -97,7 +97,7 @@ async function createImage(
   sizeOptions: OptionsObject,
   format: string,
   outPath: string
-): Promise<Boolean> {
+): Promise<boolean> {
   let outcome = false;
   try {
     await sharp(imageFile)
