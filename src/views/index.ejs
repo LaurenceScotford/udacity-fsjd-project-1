@@ -54,6 +54,9 @@
         </ul>
         <h2>Possible errors</h2>
         <ul>
+            <li>Note that some browsers do not come with viewers for TIFF and AVIF as standard, so if you request either of these types
+            and you don't have a supporting browser or have not installed a suitable viewer, your browser may respond by treating
+            them as binary files, so you will get a downloaded file rather than a render in the browser.</li>
             <li>If you enter invalid parameters (e.g. no <strong>name</strong> parameter, <strong>width</strong> or
                 <strong>height</strong> are non-numeric or negative numbers, <strong>format</strong> is not a supported output type)
                 then the API will respond with an HTTP 400 status.</li>

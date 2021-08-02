@@ -43,6 +43,8 @@ if a valid format is included then the output image will be of the format specif
 
 If the query is properly formed and the image is matched then an image of the requested size and format will be served with an HTTP status of 200.
 
+Note that some browsers do not come with viewers for TIFF and AVIF as standard, so if you request either of these types and you don't have a supporting browser or have not installed a suitable viewer, your browser may respond by treating them as binary files, so you will get a downloaded file rather than a render in the browser.
+
 If the server fails to process the image request (unlikely), then the API will return a 500 HTTP stats
 
 If the name is excluded, or invalid arguments are passed to width or height (less than zero or non-numeric) or to format (anything other than jpg, png, webp, vif or tiff) then the API will return a 400 HTTP status.
