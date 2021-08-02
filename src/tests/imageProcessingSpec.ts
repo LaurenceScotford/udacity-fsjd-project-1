@@ -64,12 +64,12 @@ describe('imageProcessing', () => {
             emptyThumbDir();
         });
 
-        it('should return a path to a raw image when no size or type parameters are included', async () => {
+        it('should return a path to a raw image when no size or format parameters are included', async () => {
             const imagePath = await serveImage(imageFile, imageName, '', 0, 0);
             expect(imagePath).toMatch(/\/images\/fjord.jpeg$/);
         });
 
-        it('should return a path to a thumbnail when size or type parameters are included', async () => {
+        it('should return a path to a thumbnail when size or format parameters are included', async () => {
             const imagePath = await serveImage(imageFile, imageName, '', 200, 0);
             expect(imagePath).toMatch(/\/thumbnails\/fjord_200x0.jpeg$/);
         });

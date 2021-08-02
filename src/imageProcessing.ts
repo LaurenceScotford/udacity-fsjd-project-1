@@ -1,7 +1,7 @@
 import { access, readdir } from 'fs/promises';
 import path from 'path';
 import sharp, { FormatEnum } from 'sharp';
-import { thumbnailPath, imagePath, validTypes } from './apiconstants';
+import { thumbnailPath, imagePath, validFormats } from './apiconstants';
 
 interface OptionsObject {
   [key: string]: number | string
@@ -12,24 +12,24 @@ interface OptionsObject {
  * 
  * @param imageFile A path to the raw image
  * @param name The name of the image
- * @param type The type to convert the image to - can be 'jpeg', 'png', 'webp' or an empty string if no conversion is required
+ * @param format The format to convert the image to - can be 'jpeg', 'png', 'webp' or an empty string if no conversion is required
  * @param width The width of the thumbnail in pixels (or 0 for an auto width)
  * @param height The height of the thumbnail in pixels (or 0 for an auto height)
  * NOTE: An auto width or height will be set to either the original image size if both are auto, or will be set to retain the original aspect ratio
  * @returns The path to the created or existing thumbnail or the raw image if no conversion or resizing was specified
  */
-async function serveImage(imageFile: string, name: string, type: string, width: number, height: number) : Promise<string> {
+async function serveImage(imageFile: string, name: string, format: string, width: number, height: number) : Promise<string> {
   let outPath : string = imageFile; 
 
   // If the requested image is not being modified in any way, simply return the original image
-  if (!(type.length === 0 && width === 0 && height === 0)) {
+  if (!(format.length === 0 && width === 0 && height === 0)) {
     
-    // Set the required output file type
-    type = type.length === 0 ?  path.parse(imageFile).ext.substring(1) : type;
-    type = validTypes[type];
+    // Set the required output file format
+    format = format.length === 0 ?  path.parse(imageFile).ext.substring(1) : format;
+    format = validFormats[format];
     
     // Get the filepath for the modified file
-    outPath = thumbPath(name, type, width, height);
+    outPath = thumbPath(name, format, width, height);
     
     // Check if the requested thumbnail already exists
     const fileExists = await thumbnailExists(outPath);
@@ -51,7 +51,7 @@ async function serveImage(imageFile: string, name: string, type: string, width: 
         options.fit = 'fill';
       }
 
-      await createImage(imageFile, options, type, outPath);
+      await createImage(imageFile, options, format, outPath);
     }
   }
 
@@ -106,7 +106,7 @@ async function findImage(imageName : string) : Promise<string> {
     const files = await readdir(imagePath);
     files.forEach(file => {
       const pathObj = path.parse(file);
-      if ( pathObj.name.toLowerCase() === imageName.toLowerCase() ) {
+      if (pathObj.name.toLowerCase() === imageName.toLowerCase()) {
         filename = imagePath + file;
       }
     });
@@ -120,13 +120,35 @@ async function findImage(imageName : string) : Promise<string> {
  * Constructs a file path for a thumnnail based on the parameters
  * 
  * @param imageName The name of the base image
- * @param type The file type
+ * @param format The file format
  * @param width The required width
  * @param height The required height
  * @returns A path for the thumnbnail
  */
-function thumbPath(imageName : string, type : string, width :number , height : number) : string {
-    return thumbnailPath + imageName + '_' + width + 'x' + height + '.' + type;
+function thumbPath(imageName : string, format : string, width :number , height : number) : string {
+    return thumbnailPath + imageName + '_' + width + 'x' + height + '.' + format;
 }
 
-export { findImage, serveImage, createImage, thumbnailExists, thumbPath };
+/**
+ * Returns an array containing the names of supported images found in the image library
+ * 
+ * @returns An array with the names of supported images
+ */
+async function getImageList() : Promise<Array<string>> {
+  const images: Array<string> = [];
+  try {
+    const files = await readdir(imagePath);
+    files.forEach(file =>  {
+      const pathObj = path.parse(file);
+      if (Object.keys(validFormats).includes(pathObj.ext.substring(1).toLowerCase())) {
+        images.push(pathObj.name.toLowerCase());
+      }
+    });
+  } catch(err) {
+    console.error(err);
+  }
+
+  return images;
+}
+
+export { findImage, serveImage, createImage, thumbnailExists, thumbPath, getImageList };

@@ -10,5 +10,19 @@ describe('image.ts : route to request an image', () => {
             .expect(200)
             .end((error) => (error ? done.fail(error) : done()));
         });
+
+        it('should return a status of 401 for a malformed query', (done) => {
+            request(app)
+            .get('/image?name=fjord&width=fifty')
+            .expect(401)
+            .end((error) => (error ? done.fail(error) : done()));
+        });
+
+        it('should return a status of 404 if a matching image is not found', (done) => {
+            request(app)
+            .get('/image?name=nothing')
+            .expect(404)
+            .end((error) => (error ? done.fail(error) : done()));
+        })
     });
 });
