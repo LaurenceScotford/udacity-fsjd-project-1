@@ -97,10 +97,10 @@ describe('imageProcessing', () => {
 
     it('should not create a thumbnail when a previous thumbnail exists', async () => {
       let imagePath = await serveImage(imageFile, imageName, '', 200, 0);
-      const fileStats = statSync(imagePath);
+      const fileModTime = statSync(imagePath).mtime;
       imagePath = await serveImage(imageFile, imageName, '', 200, 0);
-      const fileStats2 = statSync(imagePath);
-      expect(fileStats).toEqual(fileStats2);
+      const fileModTime2 = statSync(imagePath).mtime;
+      expect(fileModTime).toEqual(fileModTime2);
     });
   });
 });
