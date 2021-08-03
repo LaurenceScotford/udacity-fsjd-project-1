@@ -1,7 +1,7 @@
 import { access, readdir } from 'fs/promises';
 import path from 'path';
 import sharp, { FormatEnum } from 'sharp';
-import { thumbnailPath, imagePath, validFormats } from './apiconstants';
+import { thumbnailPath, imagePath, validFormats } from '../../apiconstants';
 
 interface OptionsObject {
   [key: string]: number | string;

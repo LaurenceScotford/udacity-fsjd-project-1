@@ -1,10 +1,10 @@
-import express from 'express';
-import { findImage, serveImage } from '../imageProcessing';
+import { Router, Request, Response } from 'express';
+import { findImage, serveImage } from './helpers/imageProcessing';
 import { validFormats } from '../apiconstants';
 
-const router = express.Router();
+const router: Router = Router();
 
-router.get('/', async (req, res) => {
+router.get('/', async (req: Request, res: Response) => {
   const name = req.query.name ? (req.query.name as string).toLowerCase() : '';
   const format = req.query.format
     ? (req.query.format as string).toLowerCase()

@@ -1,5 +1,5 @@
 import request from 'supertest';
-import app from '../../index';
+import app from '../../../src/index';
 
 describe('image.ts : route to request an image', () => {
   describe('app.get', () => {

@@ -5,11 +5,11 @@ import {
   createImage,
   findImage,
   thumbPath
-} from '../imageProcessing';
+} from '../../src/routes/helpers/imageProcessing';
 
-const thumbDir = __dirname + '/../thumbnails/';
+const thumbDir = __dirname + '/../../src/thumbnails/';
 const thumbFile = thumbDir + 'fjord_200x100.png';
-const imageFile = __dirname + '/../images/fjord.jpeg';
+const imageFile = __dirname + '/../../src/images/fjord.jpeg';
 
 function emptyThumbDir() {
   // Empty the thumbnails directory

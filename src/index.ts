@@ -2,7 +2,7 @@ import express from 'express';
 import path from 'path';
 import { existsSync, mkdirSync } from 'fs';
 import imageRoute from './routes/image';
-import { getImageList } from './imageProcessing';
+import { getImageList } from './routes/helpers/imageProcessing';
 import { thumbnailPath, port } from './apiconstants';
 
 const app = express();
@@ -24,7 +24,7 @@ app.set('views', path.join(__dirname, '/views'));
 app.use(express.static(__dirname + '/public'));
 
 // Set up root
-app.get('/', async (req, res) => {
+app.get('/', async (req: express.Request, res: express.Response) => {
   // Get a list of available images
   app.locals.imageList = await getImageList();
   app.locals.baseUrl = req.protocol + '://' + req.hostname + ':' + port;
