@@ -71,6 +71,6 @@
   },
   "include": [
     "src/**/*"
-  ],
+, "spec/tests"  ],
   "exclude": ["node_modules", "./dist", "spec"]
 }
