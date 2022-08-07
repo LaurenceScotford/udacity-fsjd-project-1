@@ -1,111 +1,126 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <title>Thumbnail Generator API</title>
-        <link href="/css/thumbnailAPI.css" rel="stylesheet">
-        <script src="js\thumbnailAPI.js"></script>
-    </head>
-    <body>
-        <h1>Thumbnail Generator API</h1>
-        <p>This API will generate thumbnails of images at a required size and image format.</p>
-        <p>To use the API request an image using:</p>
-        <pre><%= baseUrl %>/image?name=[name]&width=[width]&height=[height]&format=[format]</pre>
-        <p>Where the query parameters are:</p>
-        <table>
-            <thead>
-                <tr>
-                    <th>Parameter</th>
-                    <th>Required/optional</th>
-                    <th>Value</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>name</td>
-                    <td>required</td>
-                    <td>Name of image without extension (case insensitive)</td>
-                </tr>
-                <tr>
-                    <td>width</td>
-                    <td>optional</td>
-                    <td>Width of thumbnail in pixels (or 0 to size automatically)</td>
-                </tr>
-                <tr>
-                    <td>height</td>
-                    <td>optional</td>
-                    <td>Height of thumbnail in pixels (or 0 to size automatically)</td>
-                </tr>
-                <tr>
-                    <td>format</td>
-                    <td>optional</td>
-                    <td>Format of thumnail: avif, jpeg, png, tiff, webp (case insensitive)</td>
-                </tr>
-            </tbody>
-        </table>
-        <ul>
-            <li>If you don't include any of the optional parameters, the original image will be served.</li>
-            <li>If you include a width and either no height or a height of 0 (or vice versa) then the missing/0 parameter will be set
-    automatically to retain the aspect ratio of the original image.</li>
-            <li>If you include both width and height with non-zero values then the thumbnail will be rendered to these dimensions
-    regardless of the aspect ratio of the original image.</li>
-            <li>Note that the API does not support fractional pixel values. Any fractional part of a width or height will be truncated.</li>
-            <li>If format is excluded then a default format will be selected based on the format of the original image.</li>
-        </ul>
-        <h2>Possible errors</h2>
-        <ul>
-            <li>Note that some browsers do not come with viewers for TIFF and AVIF as standard, so if you request either of these types
-            and you don't have a supporting browser or have not installed a suitable viewer, your browser may respond by treating
+
+<head>
+    <meta charset="utf-8">
+    <title>Thumbnail Generator API</title>
+    <link href="\css\thumbnailAPI.css" rel="stylesheet">
+    <script src="\js\thumbnailAPI.js"></script>
+</head>
+
+<body>
+    <h1>Thumbnail Generator API</h1>
+    <p>This API will generate thumbnails of images at a required size and image format.</p>
+    <p>To use the API request an image using:</p>
+    <pre><%= baseUrl %><wbr>/image?name=[name]<wbr>&width=[width]<wbr>&height=[height]<wbr>&format=[format]</pre>
+    <p>Where the query parameters are:</p>
+    <table>
+        <thead>
+            <tr>
+                <th>Parameter</th>
+                <th>Required/optional</th>
+                <th>Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>name</td>
+                <td>required</td>
+                <td>Name of image without extension (case insensitive)</td>
+            </tr>
+            <tr>
+                <td>width</td>
+                <td>optional</td>
+                <td>Width of thumbnail in pixels (or 0 to size automatically)</td>
+            </tr>
+            <tr>
+                <td>height</td>
+                <td>optional</td>
+                <td>Height of thumbnail in pixels (or 0 to size automatically)</td>
+            </tr>
+            <tr>
+                <td>format</td>
+                <td>optional</td>
+                <td>Format of thumnail: avif, jpeg, png, tiff, webp (case insensitive)</td>
+            </tr>
+        </tbody>
+    </table>
+    <ul>
+        <li>If you don't include any of the optional parameters, the original image will be served.</li>
+        <li>If you include a width and either no height or a height of 0 (or vice versa) then the missing/0 parameter
+            will be set
+            automatically to retain the aspect ratio of the original image.</li>
+        <li>If you include both width and height with non-zero values then the thumbnail will be rendered to these
+            dimensions
+            regardless of the aspect ratio of the original image.</li>
+        <li>Note that the API does not support fractional pixel values. Any fractional part of a width or height will be
+            truncated.</li>
+        <li>If format is excluded then a default format will be selected based on the format of the original image.</li>
+    </ul>
+    <h2>Possible errors</h2>
+    <ul>
+        <li>Note that some browsers do not come with viewers for TIFF and AVIF as standard, so if you request either of
+            these types
+            and you don't have a supporting browser or have not installed a suitable viewer, your browser may respond by
+            treating
             them as binary files, so you will get a downloaded file rather than a render in the browser.</li>
-            <li>If you enter invalid parameters (e.g. no <strong>name</strong> parameter, <strong>width</strong> or
-                <strong>height</strong> are non-numeric or negative numbers, <strong>format</strong> is not a supported output type)
-                then the API will respond with an HTTP 400 status.</li>
-            <li>If the requested image cannot be found, then the API will respond with an HTTP 404 status.</li>
-        </ul>
+        <li>If you enter invalid parameters (e.g. no <strong>name</strong> parameter, <strong>width</strong> or
+            <strong>height</strong> are non-numeric or negative numbers, <strong>format</strong> is not a supported
+            output type)
+            then the API will respond with an HTTP 400 status.
+        </li>
+        <li>If the requested image cannot be found, then the API will respond with an HTTP 404 status.</li>
+    </ul>
 
-        <h2>Endpoint URL generator</h2>
-        <p>Enter your desired thumbnail parameters below to generate the correct URL.</p>
-        <form>
-            <label for='name'>Name:</label>
-            <select id="name">
-                <% for (let i=0; i < imageList.length; i++) { %>
-                <option><%= imageList[i] %></option>
+    <h2>Endpoint URL generator</h2>
+    <p>Enter your desired thumbnail parameters below to generate the correct URL.</p>
+    <form>
+        <label for='name'>Name:</label>
+        <select id="name">
+            <% for (let i=0; i < imageList.length; i++) { %>
+                <option>
+                    <%= imageList[i] %>
+                </option>
                 <% } %>
-            </select>
-            <label for='width'>Width:</label>
-            <input id="width" type="number" value="0" min="0" steps="1">
-            <label for='height'>Height:</label>
-            <input id="height" type="number" value="0" min="0" steps="1">
-            <label for='format'>Format:</label>
-            <select id="format">
-                <option>(default)</option>
-                <option>avif</option>
-                <option>jpeg</option>
-                <option>png</option>
-                <option>tiff</option>
-                <option>webp</option>
-            </select>
-        </form>
-        <div id="url_container">
-            <p>Use this URL:</p>
-            <div id="url"></div>
-        </div>
-        <div id="error_container" class="hide"></div>
+        </select>
+        <label for='width'>Width:</label>
+        <input id="width" type="number" value="0" min="0" steps="1">
+        <label for='height'>Height:</label>
+        <input id="height" type="number" value="0" min="0" steps="1">
+        <label for='format'>Format:</label>
+        <select id="format">
+            <option>(default)</option>
+            <option>avif</option>
+            <option>jpeg</option>
+            <option>png</option>
+            <option>tiff</option>
+            <option>webp</option>
+        </select>
+    </form>
+    <div id="url_container">
+        <p>Use this URL:</p>
+        <div id="url"></div>
+    </div>
+    <div id="error_container" class="hide"></div>
 
-        <h2>Available images</h2>
-        <div id="images">
-            <% for (let i = 0; i < imageList.length; i++) { %>
-                <div class="image">
-                    <p><strong><%= imageList[i] %></strong></p>
-                    <%- '<img src="/image?name=' + imageList[i] + '&width=200">' %></li>
-                </div>
-               
-            <% } %>
+    <h2>Available images</h2>
+    <div id="images">
+        <% for (let i=0; i < imageList.length; i++) { %>
+            <div class="image">
+                <p><strong>
+                        <%= imageList[i] %>
+                    </strong></p>
+                <%- '<img src="/image?name=' + imageList[i] + '&width=200">' %>
+                    </li>
             </div>
-            <script>
-                document.addEventListener('DOMContentLoaded', function () {
-                    setUpFormListeners("<%= baseUrl %>");
-                });
-            </script>
-    </body>
+
+            <% } %>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            setUpFormListeners("<%= baseUrl %>");
+        });
+    </script>
+</body>
+
 </html>

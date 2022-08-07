@@ -15,6 +15,11 @@
   ],
   "rules": {
     "tsdoc/syntax": "warn",
-    "prettier/prettier": "error"
+    "prettier/prettier": [
+      "error",
+        {
+          "endOfLine": "auto"
+        }
+    ]
   }
 }
